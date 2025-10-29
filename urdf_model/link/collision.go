@@ -14,5 +14,5 @@ type Collision struct {
 func (c *Collision) Clear() {
 	c.Name = ""
 	c.Origin.Clear()
-	c.Geometry.Clear()
+	(*c.Geometry).Clear()
 }

@@ -11,3 +11,19 @@ type Visual struct {
 	Name     string
 	Material *Material
 }
+
+func (v *Visual) Clear() {
+	v.Name = ""
+	v.Origin.Clear()
+	if v.Geometry != nil {
+		(*v.Geometry).Clear()
+	}
+	if v.Material != nil {
+		v.Material.Name = ""
+		v.Material.TextureFilename = ""
+		if v.Material.Color != nil {
+			colorPtr := v.Material.Color
+			colorPtr.Clear()
+		}
+	}
+}

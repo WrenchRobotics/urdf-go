@@ -9,3 +9,11 @@ type Material struct {
 	TextureFilename string
 	Color           *color.Color
 }
+
+func (m *Material) Clear() {
+	m.Name = ""
+	m.TextureFilename = ""
+	if m.Color != nil {
+		m.Color.Clear()
+	}
+}
