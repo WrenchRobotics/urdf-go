@@ -1,5 +1,10 @@
 package pose
 
+import (
+	"encoding/xml"
+	"fmt"
+)
+
 type Vector3 [3]float64
 
 func NewVector3(x, y, z float64) Vector3 {
@@ -27,3 +32,12 @@ func (v *Vector3) Clear() {
 	v[1] = 0
 	v[2] = 0
 }
+
+func (v Vector3) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
+	return xml.Attr{
+		Name:  name,
+		Value: fmt.Sprintf("%v %v %v", v.X(), v.Y(), v.Z()),
+	}, nil
+}
+
+func (v Vector3) Unmarshal
