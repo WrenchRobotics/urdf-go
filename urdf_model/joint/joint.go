@@ -11,6 +11,7 @@ type Joint struct {
 	ChildLinkName                string
 	ParentLinkName               string
 	ParentToJointOriginTransform pose.Pose
+	Dynamics                     *JointDynamics
 	Limits                       *JointLimits
 	Mimic                        *JointMimic
 }

@@ -94,3 +94,10 @@ func (r *Rotation) Inverse() Rotation {
 	}
 	return r
 }
+
+func (r *Rotation) Clear() {
+	r[0] = 0
+	r[1] = 0
+	r[2] = 0
+	r[3] = 1
+}
