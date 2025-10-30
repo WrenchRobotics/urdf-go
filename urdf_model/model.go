@@ -54,6 +54,6 @@ func (m Model) GetMaterial(materialName string) (*link.Material, error) {
 		}
 	}
 
-	// Return successfally retrieved material pointer
+	// Return successfully retrieved material pointer
 	return out, nil
 }
