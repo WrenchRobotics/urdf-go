@@ -66,7 +66,7 @@ func (r *Rotation) Normalize() {
 	r[3] /= norm
 }
 
-func (r *Rotation) Multiply(other Rotation) Rotation {
+func (r Rotation) Multiply(other Rotation) Rotation {
 	return Rotation{
 		r.W()*other.X() + r.X()*other.W() + r.Y()*other.Z() - r.Z()*other.Y(),
 		r.W()*other.Y() - r.X()*other.Z() + r.Y()*other.W() + r.Z()*other.X(),
@@ -81,16 +81,23 @@ func (r *Rotation) Rotate(vec Vector3) Vector3 {
 	return Vector3{tmp.X(), tmp.Y(), tmp.Z()}
 }
 
-func (r *Rotation) Inverse() Rotation {
+func (r Rotation) Inverse() Rotation {
 	norm := r.X()*r.X() + r.Y()*r.Y() + r.Z()*r.Z() + r.W()*r.W()
 	if norm > 0 {
 		invNorm := 1.0 / norm
 		return Rotation{
-			-r.X() * invNorm, 
-			-r.Y() * invNorm, 
-			-r.Z() * invNorm, 
-			r.W() * invNorm
+			-r.X() * invNorm,
+			-r.Y() * invNorm,
+			-r.Z() * invNorm,
+			r.W() * invNorm,
 		}
 	}
 	return r
+}
+
+func (r *Rotation) Clear() {
+	r[0] = 0
+	r[1] = 0
+	r[2] = 0
+	r[3] = 1
 }
