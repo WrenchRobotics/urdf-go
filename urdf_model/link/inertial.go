@@ -14,7 +14,9 @@ type Inertial struct {
 }
 
 func (i *Inertial) Clear() {
-	i.Origin.Clear()
+	if i.Origin != nil {
+		i.Origin.Clear()
+	}
 	i.Mass = 0
 	i.Ixx = 0
 	i.Ixy = 0
