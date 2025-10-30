@@ -1,10 +1,13 @@
 package link
 
-import "github.com/WrenchRobotics/urdf-go/urdf_model/joint"
+import (
+	"github.com/WrenchRobotics/urdf-go/urdf_model/joint"
+	"github.com/WrenchRobotics/urdf-go/urdf_model/link/inertial"
+)
 
 type Link struct {
 	Name           string
-	Inertial       *Inertial
+	Inertial       *inertial.Inertial
 	VisualArray    []*Visual
 	CollisionArray []*Collision
 	ParentJoint    *joint.Joint

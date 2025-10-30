@@ -27,10 +27,10 @@ func (r *Rotation) FromRollPitchYaw(roll, pitch, yaw float64) {
 	cy, sy := math.Cos(yaw*0.5), math.Sin(yaw*0.5)
 
 	// Assemble Quaternion
-	r[0] = cr*cp*cy + sr*sp*sy
-	r[1] = sr*cp*cy - cr*sp*sy
-	r[2] = cr*sp*cy + sr*cp*sy
-	r[3] = cr*cp*sy - sr*sp*cy
+	r[3] = cr*cp*cy + sr*sp*sy
+	r[0] = sr*cp*cy - cr*sp*sy
+	r[1] = cr*sp*cy + sr*cp*sy
+	r[2] = cr*cp*sy - sr*sp*cy
 }
 
 func (r *Rotation) X() float64 {
