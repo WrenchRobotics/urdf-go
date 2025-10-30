@@ -8,20 +8,13 @@ import (
 type Visual struct {
 	Origin   pose.Pose         `xml:"origin"`
 	Geometry geometry.Geometry `xml:"geometry"`
-	Name     string
-	Material *Material
+	Name     string            `xml:"name,attr"`
+	Material Material          `xml:"material"`
 }
 
 func (v *Visual) Clear() {
 	v.Name = ""
 	v.Origin.Clear()
 	v.Geometry.Clear()
-	if v.Material != nil {
-		v.Material.Name = ""
-		v.Material.TextureFilename = ""
-		if v.Material.Color != nil {
-			colorPtr := v.Material.Color
-			colorPtr.Clear()
-		}
-	}
+	v.Material.Clear()
 }

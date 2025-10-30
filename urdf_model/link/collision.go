@@ -6,17 +6,13 @@ import (
 )
 
 type Collision struct {
-	Name     string
-	Origin   *pose.Pose
-	Geometry *geometry.Geometry
+	Name     string            `xml:"name,attr"`
+	Origin   pose.Pose         `xml:"origin"`
+	Geometry geometry.Geometry `xml:"geometry"`
 }
 
 func (c *Collision) Clear() {
 	c.Name = ""
-	if c.Origin != nil {
-		c.Origin.Clear()
-	}
-	if c.Geometry != nil {
-		(*c.Geometry).Clear()
-	}
+	c.Origin.Clear()
+	c.Geometry.Clear()
 }

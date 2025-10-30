@@ -21,16 +21,7 @@ func (l *Link) Clear() {
 		if v == nil {
 			continue
 		}
-		v.Name = ""
-		v.Origin.Clear()
-		v.Geometry.Clear()
-		if v.Material != nil {
-			v.Material.Name = ""
-			v.Material.TextureFilename = ""
-			if v.Material.Color != nil {
-				v.Material.Color.Clear()
-			}
-		}
+		v.Clear()
 	}
 	l.VisualArray = nil
 	for _, c := range l.CollisionArray {

@@ -30,7 +30,7 @@ func TestVisual_Unmarshal1(t *testing.T) {
 	dims := []float64{1.2, 2.3, 7}
 	toDecode := `<visual>	
 		<geometry>
-			<box size="` + fmt.Sprintf("%v %v %v", dims[0], dims[1], dims[2]) + `" temp="blah"/>
+			<box size="` + fmt.Sprintf("%v %v %v", dims[0], dims[1], dims[2]) + `"/>
 		</geometry>
 		<material name="flask_glass">
 			<color rgba="1.0 1.0 1.0 0.4"/>

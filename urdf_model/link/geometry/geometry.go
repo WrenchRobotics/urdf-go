@@ -3,6 +3,7 @@ package geometry
 import (
 	"fmt"
 
+	model_errors "github.com/WrenchRobotics/urdf-go/urdf_model/errors"
 	geometry_type "github.com/WrenchRobotics/urdf-go/urdf_model/link/geometry/type"
 )
 
@@ -48,10 +49,10 @@ func (g Geometry) Check() error {
 				activeTypes = append(activeTypes, geomType)
 			}
 		default:
-			return fmt.Errorf(
-				"unknown geometry implementation type: %T",
-				geomImpl,
-			)
+			return &model_errors.UnknownGeometryImplementationError{
+				ImplementationName: fmt.Sprintf("%T", geomImpl),
+				MethodName:         "Check",
+			}
 		}
 	}
 
@@ -87,9 +88,32 @@ func (g *Geometry) Clear() {
 }
 
 func (g *Geometry) GetActiveImplementation() GeometryImplementation {
+	if g.Check() != nil {
+		return nil
+	}
+
 	for _, geomImpl := range g.GetImplementationMap() {
-		if geomImpl != nil {
-			return geomImpl
+		switch geomImpl := geomImpl.(type) {
+		case *Box:
+			var nilBox *Box = nil
+			if geomImpl != nilBox {
+				return geomImpl
+			}
+		case *Cylinder:
+			var nilCyl *Cylinder = nil
+			if geomImpl != nilCyl {
+				return geomImpl
+			}
+		case *Mesh:
+			var nilMesh *Mesh = nil
+			if geomImpl != nilMesh {
+				return geomImpl
+			}
+		case *Sphere:
+			var nilSphere *Sphere = nil
+			if geomImpl != nilSphere {
+				return geomImpl
+			}
 		}
 	}
 	return nil
