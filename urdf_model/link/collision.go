@@ -13,6 +13,10 @@ type Collision struct {
 
 func (c *Collision) Clear() {
 	c.Name = ""
-	c.Origin.Clear()
-	(*c.Geometry).Clear()
+	if c.Origin != nil {
+		c.Origin.Clear()
+	}
+	if c.Geometry != nil {
+		(*c.Geometry).Clear()
+	}
 }
