@@ -3,6 +3,8 @@ package pose
 import (
 	"encoding/xml"
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 type Vector3 [3]float64
@@ -40,4 +42,35 @@ func (v Vector3) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 	}, nil
 }
 
-func (v Vector3) Unmarshal
+func (v *Vector3) UnmarshalXMLAttr(attr xml.Attr) error {
+	// Split value into three parts by the "space"
+	valueWithoutBrackets := strings.ReplaceAll(attr.Value, "[", "")
+	valueWithoutBrackets = strings.ReplaceAll(valueWithoutBrackets, "]", "")
+	values := strings.Split(valueWithoutBrackets, " ")
+
+	// Check that there are three elements
+	if len(values) != 3 {
+		return fmt.Errorf(
+			"there was a problem parsing \"%v\" as a Vector3. Expected there to be 2 spaces, but there were not!",
+			values,
+		)
+	}
+
+	// Extract each element
+	var err error
+	for ii, valueII := range values {
+		v[ii], err = strconv.ParseFloat(valueII, 64)
+		// fmt.Println(ii, "has value", valueII)
+		if err != nil {
+			return fmt.Errorf(
+				"there was a problem interpreting the %v-th component of Vector3 (%v): %v",
+				ii,
+				values[ii],
+				err,
+			)
+		}
+	}
+
+	return nil
+
+}

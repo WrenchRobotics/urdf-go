@@ -23,9 +23,7 @@ func (l *Link) Clear() {
 		}
 		v.Name = ""
 		v.Origin.Clear()
-		if v.Geometry != nil {
-			(*v.Geometry).Clear()
-		}
+		v.Geometry.Clear()
 		if v.Material != nil {
 			v.Material.Name = ""
 			v.Material.TextureFilename = ""

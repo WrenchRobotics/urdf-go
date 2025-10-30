@@ -1,11 +1,36 @@
 package pose
 
-import "math"
+import (
+	"encoding/xml"
+	"fmt"
+	"math"
+	"strconv"
+	"strings"
+)
 
 type Rotation [4]float64
 
 func NewRotation(x, y, z, w float64) Rotation {
 	return Rotation{x, y, z, w}
+}
+
+/*
+FromRollPitchYaw
+Description:
+
+	Assume roll (x), pitch (y) and yaw (z) are angles in radians.
+*/
+func (r *Rotation) FromRollPitchYaw(roll, pitch, yaw float64) {
+	// Setup
+	cr, sr := math.Cos(roll*0.5), math.Sin(roll*0.5)
+	cp, sp := math.Cos(pitch*0.5), math.Sin(pitch*0.5)
+	cy, sy := math.Cos(yaw*0.5), math.Sin(yaw*0.5)
+
+	// Assemble Quaternion
+	r[0] = cr*cp*cy + sr*sp*sy
+	r[1] = sr*cp*cy - cr*sp*sy
+	r[2] = cr*sp*cy + sr*cp*sy
+	r[3] = cr*cp*sy - sr*sp*cy
 }
 
 func (r *Rotation) X() float64 {
@@ -100,4 +125,40 @@ func (r *Rotation) Clear() {
 	r[1] = 0
 	r[2] = 0
 	r[3] = 1
+}
+
+func (r *Rotation) UnmarshalXMLAttr(attr xml.Attr) error {
+	// Split value into three parts by the "space"
+	valueWithoutBrackets := strings.ReplaceAll(attr.Value, "[", "")
+	valueWithoutBrackets = strings.ReplaceAll(valueWithoutBrackets, "]", "")
+	values := strings.Split(valueWithoutBrackets, " ")
+
+	// Check that there are three elements
+	if len(values) != 3 {
+		return fmt.Errorf(
+			"there was a problem parsing \"%v\" as a Vector3. Expected there to be 2 spaces, but there were not!",
+			values,
+		)
+	}
+
+	// Extract each element
+	var err error
+	var rpy [3]float64
+	for ii, valueII := range values {
+		rpy[ii], err = strconv.ParseFloat(valueII, 64)
+		// fmt.Println(ii, "has value", valueII)
+		if err != nil {
+			return fmt.Errorf(
+				"there was a problem interpreting the %v-th component of Vector3 (%v): %v",
+				ii,
+				values[ii],
+				err,
+			)
+		}
+	}
+
+	r.FromRollPitchYaw(rpy[0], rpy[1], rpy[2])
+
+	return nil
+
 }

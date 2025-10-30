@@ -3,8 +3,8 @@ package geometry
 import geometry_type "github.com/WrenchRobotics/urdf-go/urdf_model/link/geometry/type"
 
 type Cylinder struct {
-	Radius float64
-	Length float64
+	Radius float64 `xml:"radius,attr"`
+	Length float64 `xml:"length,attr"`
 }
 
 func (c *Cylinder) Type() geometry_type.GeometryType {
