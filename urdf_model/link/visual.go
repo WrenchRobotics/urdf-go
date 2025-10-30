@@ -14,7 +14,9 @@ type Visual struct {
 
 func (v *Visual) Clear() {
 	v.Name = ""
-	v.Origin.Clear()
+	if v.Origin != nil {
+		v.Origin.Clear()
+	}
 	if v.Geometry != nil {
 		(*v.Geometry).Clear()
 	}
