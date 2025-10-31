@@ -17,12 +17,12 @@ func main() {
 
 	// Decode
 	var geom geometry.Mesh
-	err := xml.Unmarshal([]byte(toDecode), geom)
+	err := xml.Unmarshal([]byte(toDecode), &geom)
 	if err != nil {
-		fmt.Println("there was an issue decoding the input toDecode: %v", err)
+		fmt.Println("there was an issue decoding the input toDecode:", err)
 	}
 
 	// Print output geom
-	fmt.Println("the output geom object: %v", geom)
+	fmt.Printf("the output geom object: %+v\n", geom)
 
 }
