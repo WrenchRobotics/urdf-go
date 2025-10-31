@@ -1,5 +1,7 @@
 package joint_type
 
+import "encoding/xml"
+
 type JointType string
 
 const (
@@ -11,3 +13,8 @@ const (
 	PlanarJoint     JointType = "planar"
 	UnknownJoint    JointType = "unknown"
 )
+
+func (jt *JointType) UnmarshalXMLAttr(attr xml.Attr) error {
+	*jt = JointType(attr.Value)
+	return nil
+}

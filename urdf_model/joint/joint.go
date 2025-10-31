@@ -6,12 +6,13 @@ import (
 )
 
 type Joint struct {
-	Name                         string
-	Type                         joint_type.JointType
-	ChildLinkName                string
-	ParentLinkName               string
-	ParentToJointOriginTransform pose.Pose
-	Dynamics                     *JointDynamics
-	Limits                       *JointLimits
-	Mimic                        *JointMimic
+	Name                         string               `xml:"name,attr"`
+	Type                         joint_type.JointType `xml:"type,attr"`
+	ChildLinkRef                 JointLinkReference   `xml:"child"`
+	ParentLinkRef                JointLinkReference   `xml:"parent"`
+	ParentToJointOriginTransform pose.Pose            `xml:"origin"`
+	Axis                         JointAxis            `xml:"axis"`
+	Dynamics                     *JointDynamics       `xml:"dynamics"`
+	Limits                       *JointLimits         `xml:"limit"`
+	Mimic                        *JointMimic          `xml:"mimic"`
 }

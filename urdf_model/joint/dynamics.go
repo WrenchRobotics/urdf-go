@@ -1,8 +1,8 @@
 package joint
 
 type JointDynamics struct {
-	Damping  float64
-	Friction float64
+	Damping  float64 `xml:"damping,attr"`
+	Friction float64 `xml:"friction,attr"`
 }
 
 func NewJointDynamics(damping, friction float64) JointDynamics {

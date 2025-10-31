@@ -1,4 +1,4 @@
-package link_test
+package inertial_test
 
 import (
 	"encoding/xml"
