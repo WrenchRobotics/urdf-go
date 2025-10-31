@@ -37,7 +37,6 @@ func TestVisual_Unmarshal1(t *testing.T) {
 		</material>
 		<origin xyz="1 2 3" rpy="0.1 0.2 0.3" />
 	</visual>`
-	t.Errorf(toDecode)
 
 	// Decode
 	var visualElt link.Visual
@@ -45,8 +44,6 @@ func TestVisual_Unmarshal1(t *testing.T) {
 	if err != nil {
 		t.Errorf("there was an issue decoding the input toDecode: %v", err)
 	}
-
-	t.Errorf("%v", visualElt)
 
 	// Check values
 	err = visualElt.Geometry.Check()
