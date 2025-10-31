@@ -6,13 +6,13 @@ import (
 )
 
 type Link struct {
-	Name           string
-	Inertial       *inertial.Inertial
-	VisualArray    []*Visual
-	CollisionArray []*Collision
-	ParentJoint    *joint.Joint
-	ChildJoints    []*joint.Joint
-	ChildLinks     []*Link
+	Name           string             `xml:"name,attr"`
+	Inertial       *inertial.Inertial `xml:"inertial"`
+	VisualArray    []*Visual          `xml:"visual"`
+	CollisionArray []*Collision       `xml:"collision"`
+	ParentJoint    *joint.Joint       `xml:"parent_joint"`
+	ChildJoints    []*joint.Joint     `xml:"child_joints"`
+	ChildLinks     []*Link            `xml:"child_links"`
 }
 
 func (l *Link) Clear() {
