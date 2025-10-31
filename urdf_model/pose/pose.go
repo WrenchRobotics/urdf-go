@@ -1,8 +1,8 @@
 package pose
 
 type Pose struct {
-	Position Vector3
-	Rotation Rotation
+	Position Vector3  `xml:"xyz,attr"`
+	Rotation Rotation `xml:"rpy,attr"`
 }
 
 func (p *Pose) Clear() {

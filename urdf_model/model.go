@@ -7,7 +7,7 @@ import (
 )
 
 type Model struct {
-	Name string
+	Name string `xml:"name,attr"`
 	// Unexported fields
 	// (as a reminder, all fields with first character in lower case will not be exported outside of a Go package)
 	rootLink  *link.Link

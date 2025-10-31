@@ -6,7 +6,7 @@ import (
 )
 
 type Box struct {
-	Dimensions pose.Vector3
+	Dimensions pose.Vector3 `xml:"size,attr"`
 }
 
 func (b *Box) Type() geometry_type.GeometryType {

@@ -6,26 +6,15 @@ import (
 )
 
 type Visual struct {
-	Origin   *pose.Pose
-	Geometry *geometry.Geometry
-	Name     string
-	Material *Material
+	Origin   pose.Pose         `xml:"origin"`
+	Geometry geometry.Geometry `xml:"geometry"`
+	Name     string            `xml:"name,attr"`
+	Material Material          `xml:"material"`
 }
 
 func (v *Visual) Clear() {
 	v.Name = ""
-	if v.Origin != nil {
-		v.Origin.Clear()
-	}
-	if v.Geometry != nil {
-		(*v.Geometry).Clear()
-	}
-	if v.Material != nil {
-		v.Material.Name = ""
-		v.Material.TextureFilename = ""
-		if v.Material.Color != nil {
-			colorPtr := v.Material.Color
-			colorPtr.Clear()
-		}
-	}
+	v.Origin.Clear()
+	v.Geometry.Clear()
+	v.Material.Clear()
 }

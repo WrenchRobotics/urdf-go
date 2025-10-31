@@ -6,8 +6,8 @@ import (
 )
 
 type Mesh struct {
-	Filename string
-	Scale    pose.Vector3
+	Filename string       `xml:"filename,attr"`
+	Scale    pose.Vector3 `xml:"scale,attr"`
 }
 
 func (m *Mesh) Type() geometry_type.GeometryType {

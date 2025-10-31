@@ -1,15 +1,18 @@
 package link
 
-import "github.com/WrenchRobotics/urdf-go/urdf_model/joint"
+import (
+	"github.com/WrenchRobotics/urdf-go/urdf_model/joint"
+	"github.com/WrenchRobotics/urdf-go/urdf_model/link/inertial"
+)
 
 type Link struct {
-	Name           string
-	Inertial       *Inertial
-	VisualArray    []*Visual
-	CollisionArray []*Collision
-	ParentJoint    *joint.Joint
-	ChildJoints    []*joint.Joint
-	ChildLinks     []*Link
+	Name           string             `xml:"name,attr"`
+	Inertial       *inertial.Inertial `xml:"inertial"`
+	VisualArray    []*Visual          `xml:"visual"`
+	CollisionArray []*Collision       `xml:"collision"`
+	ParentJoint    *joint.Joint       `xml:"parent_joint"`
+	ChildJoints    []*joint.Joint     `xml:"child_joints"`
+	ChildLinks     []*Link            `xml:"child_links"`
 }
 
 func (l *Link) Clear() {
@@ -21,18 +24,7 @@ func (l *Link) Clear() {
 		if v == nil {
 			continue
 		}
-		v.Name = ""
-		v.Origin.Clear()
-		if v.Geometry != nil {
-			(*v.Geometry).Clear()
-		}
-		if v.Material != nil {
-			v.Material.Name = ""
-			v.Material.TextureFilename = ""
-			if v.Material.Color != nil {
-				v.Material.Color.Clear()
-			}
-		}
+		v.Clear()
 	}
 	l.VisualArray = nil
 	for _, c := range l.CollisionArray {
