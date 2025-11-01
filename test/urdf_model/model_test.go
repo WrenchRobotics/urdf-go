@@ -12,7 +12,7 @@ import (
 TestModel_DeriveModelFrom1
 Description:
 
-Tests the DeriveModelFrom1 function to ensure it correctly
+Tests the DeriveModelFrom function to ensure it correctly
 derives a new model from a successfully processed <robot> tag.
 */
 func TestModel_DeriveModelFrom1(t *testing.T) {
