@@ -210,10 +210,9 @@ func (m *Model) DefineTreeRoot() error {
 	case 1:
 		m.rootLink = rootCandidates[0]
 		return nil
-	case 2:
-		return model_errors.MultipleRootLinksError{
+	case 0:
+		return model_errors.NoRootLinkError{
 			ModelName: m.Name,
-			NumRoots:  len(rootCandidates),
 		}
 	default:
 		return model_errors.MultipleRootLinksError{
