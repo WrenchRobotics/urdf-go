@@ -28,9 +28,6 @@ func (c *Collision) FromDecodingElement(ce *decoding.CollisionElement) error {
 	}
 	c.Name = ce.Name
 	if ce.Origin != nil {
-		if c.Origin == nil {
-			c.Origin = &pose.Pose{}
-		}
 		c.Origin = ce.Origin
 	}
 
