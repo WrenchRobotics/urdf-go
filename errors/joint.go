@@ -14,3 +14,14 @@ func (err JointDoesNotExistError) Error() string {
 		err.ModelName,
 	)
 }
+
+type InvalidJointError struct {
+	Reason string
+}
+
+func (err InvalidJointError) Error() string {
+	return fmt.Sprintf(
+		"the joint is invalid: %v",
+		err.Reason,
+	)
+}

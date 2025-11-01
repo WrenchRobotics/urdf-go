@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	geometry_type "github.com/WrenchRobotics/urdf-go/common/geometry/type"
-	model_errors "github.com/WrenchRobotics/urdf-go/urdf_model/errors"
+	model_errors "github.com/WrenchRobotics/urdf-go/errors"
 )
 
 type Geometry struct {

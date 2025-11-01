@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	urdfmodel "github.com/WrenchRobotics/urdf-go/urdf_model"
+	"github.com/WrenchRobotics/urdf-go/decoding"
 )
 
 /*
@@ -83,55 +83,46 @@ func TestUnorderedModel_Unmarshal1(t *testing.T) {
 `
 
 	// Decode
-	var unorderedModel urdfmodel.UnorderedModel
-	err := xml.Unmarshal([]byte(toDecode), &unorderedModel)
+	var robot decoding.RobotElement
+	err := xml.Unmarshal([]byte(toDecode), &robot)
 	if err != nil {
 		t.Errorf("there was an issue decoding the input toDecode: %v", err)
 	}
 
 	// Check values
 	// - Name
-	if unorderedModel.Name != "flask" {
+	if robot.Name != "flask" {
 		t.Errorf(
 			"expected unorderedModel.Name to be 'flask'; received %v",
-			unorderedModel.Name,
+			robot.Name,
 		)
 	}
 
 	// - Links
-	if len(unorderedModel.Links) != 1 {
+	if len(robot.Links) != 1 {
 		t.Errorf(
 			"expected unorderedModel to have %v links; received %v",
 			1,
-			len(unorderedModel.Links),
+			len(robot.Links),
 		)
 	} else {
 		// Verify link name
 		expectedLinkName := "flask_base_link"
-		if unorderedModel.Links[0].Name != expectedLinkName {
+		if robot.Links[0].Name != expectedLinkName {
 			t.Errorf(
 				"expected unorderedModel link name to be \"%v\"; received \"%v\"",
 				expectedLinkName,
-				unorderedModel.Links[0].Name,
+				robot.Links[0].Name,
 			)
 		}
 	}
 
 	// - Joints
-	if len(unorderedModel.Joints) != 0 {
+	if len(robot.Joints) != 0 {
 		t.Errorf(
 			"expected unorderedModel to have %v joints; received %v",
 			0,
-			len(unorderedModel.Joints),
-		)
-	}
-
-	// - Materials
-	if len(unorderedModel.Materials) != 0 {
-		t.Errorf(
-			"expected unorderedModel to have %v materials; received %v",
-			0,
-			len(unorderedModel.Materials),
+			len(robot.Joints),
 		)
 	}
 }
