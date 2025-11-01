@@ -1,4 +1,4 @@
-package link_test
+package decoding_test
 
 import (
 	"encoding/xml"

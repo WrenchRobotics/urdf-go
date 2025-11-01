@@ -1,28 +1,24 @@
 package main
 
 import (
-	"encoding/xml"
 	"fmt"
 
-	"github.com/WrenchRobotics/urdf-go/common/geometry"
+	"github.com/WrenchRobotics/urdf-go/loaders"
 )
 
 func main() {
 	// Setup
-	toDecode := `
-	<geometry>
-		<mesh filename="500ml.STL" scale="0.001 0.001 0.001"/>
-	</geometry>
-	`
+	urdfPath := "500ml.urdf"
 
-	// Decode
-	var geom geometry.Mesh
-	err := xml.Unmarshal([]byte(toDecode), &geom)
+	// Load using our loading library
+	urdfModel, err := loaders.FromURDFFile(urdfPath)
 	if err != nil {
-		fmt.Println("there was an issue decoding the input toDecode:", err)
+		panic(fmt.Errorf("there was an issue loading the URDF file: %v", err))
 	}
 
-	// Print output geom
-	fmt.Printf("the output geom object: %+v\n", geom)
+	// Print information about the loaded model
+	fmt.Println("the number of links in the model:", urdfModel.NumLinks())
+	fmt.Println("the number of joints in the model:", urdfModel.NumJoints())
+	fmt.Println("the number of materials in the model:", urdfModel.NumMaterials())
 
 }

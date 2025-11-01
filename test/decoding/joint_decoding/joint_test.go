@@ -1,4 +1,4 @@
-package decoding_test
+package joint_decoding_test
 
 import (
 	"encoding/xml"
