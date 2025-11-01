@@ -1,18 +1,20 @@
 package joint
 
 import (
-	joint_type "github.com/WrenchRobotics/urdf-go/urdf_model/joint/type"
-	"github.com/WrenchRobotics/urdf-go/urdf_model/pose"
+	"github.com/WrenchRobotics/urdf-go/common"
+	joint_type "github.com/WrenchRobotics/urdf-go/common/joint/type"
+	"github.com/WrenchRobotics/urdf-go/common/pose"
+	"github.com/WrenchRobotics/urdf-go/decoding/joint_decoding"
 )
 
 type Joint struct {
-	Name                         string               `xml:"name,attr"`
-	Type                         joint_type.JointType `xml:"type,attr"`
-	ChildLinkRef                 JointLinkReference   `xml:"child"`
-	ParentLinkRef                JointLinkReference   `xml:"parent"`
-	ParentToJointOriginTransform pose.Pose            `xml:"origin"`
-	Axis                         JointAxis            `xml:"axis"`
-	Dynamics                     *JointDynamics       `xml:"dynamics"`
-	Limits                       *JointLimits         `xml:"limit"`
-	Mimic                        *JointMimic          `xml:"mimic"`
+	Name                         string
+	Type                         joint_type.JointType
+	ChildLinkRef                 *common.LinkReference
+	ParentLinkRef                *common.LinkReference
+	ParentToJointOriginTransform *pose.Pose
+	Axis                         *pose.Vector3
+	Dynamics                     *joint_decoding.JointDynamicsElement
+	Limits                       *joint_decoding.JointLimitsElement
+	Mimic                        *joint_decoding.JointMimicElement
 }

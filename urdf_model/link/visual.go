@@ -1,20 +1,27 @@
 package link
 
 import (
-	"github.com/WrenchRobotics/urdf-go/urdf_model/link/geometry"
-	"github.com/WrenchRobotics/urdf-go/urdf_model/pose"
+	"github.com/WrenchRobotics/urdf-go/common/geometry"
+	"github.com/WrenchRobotics/urdf-go/common/pose"
+	"github.com/WrenchRobotics/urdf-go/decoding"
 )
 
 type Visual struct {
-	Origin   pose.Pose         `xml:"origin"`
-	Geometry geometry.Geometry `xml:"geometry"`
-	Name     string            `xml:"name,attr"`
-	Material Material          `xml:"material"`
+	Origin   *pose.Pose
+	Geometry geometry.GeometryImplementation
+	Name     string
+	Material *decoding.MaterialElement
 }
 
 func (v *Visual) Clear() {
+	if v.Origin != nil {
+		v.Origin.Clear()
+	}
+	if v.Geometry != nil {
+		v.Geometry.Clear()
+	}
+	if v.Material != nil {
+		v.Material.Clear()
+	}
 	v.Name = ""
-	v.Origin.Clear()
-	v.Geometry.Clear()
-	v.Material.Clear()
 }

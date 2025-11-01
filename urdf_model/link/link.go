@@ -1,8 +1,8 @@
 package link
 
 import (
+	"github.com/WrenchRobotics/urdf-go/common/inertial"
 	"github.com/WrenchRobotics/urdf-go/urdf_model/joint"
-	"github.com/WrenchRobotics/urdf-go/urdf_model/link/inertial"
 )
 
 type Link struct {

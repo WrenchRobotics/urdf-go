@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	"github.com/WrenchRobotics/urdf-go/urdf_model/link/geometry"
+	"github.com/WrenchRobotics/urdf-go/common/geometry"
 )
 
 func main() {

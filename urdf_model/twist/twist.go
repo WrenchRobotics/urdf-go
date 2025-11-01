@@ -1,6 +1,6 @@
 package twist
 
-import "github.com/WrenchRobotics/urdf-go/urdf_model/pose"
+import "github.com/WrenchRobotics/urdf-go/common/pose"
 
 type Twist struct {
 	Linear  pose.Vector3

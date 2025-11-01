@@ -1,14 +1,14 @@
 package link
 
 import (
-	"github.com/WrenchRobotics/urdf-go/urdf_model/link/geometry"
-	"github.com/WrenchRobotics/urdf-go/urdf_model/pose"
+	"github.com/WrenchRobotics/urdf-go/common/geometry"
+	"github.com/WrenchRobotics/urdf-go/common/pose"
 )
 
 type Collision struct {
-	Name     string            `xml:"name,attr"`
-	Origin   pose.Pose         `xml:"origin"`
-	Geometry geometry.Geometry `xml:"geometry"`
+	Name     string
+	Origin   *pose.Pose
+	Geometry geometry.GeometryImplementation
 }
 
 func (c *Collision) Clear() {
