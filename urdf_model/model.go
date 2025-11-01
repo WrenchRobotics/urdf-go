@@ -1,8 +1,6 @@
 package urdfmodel
 
 import (
-	"fmt"
-
 	"github.com/WrenchRobotics/urdf-go/decoding"
 	model_errors "github.com/WrenchRobotics/urdf-go/errors"
 	"github.com/WrenchRobotics/urdf-go/urdf_model/joint"
@@ -93,7 +91,6 @@ func DeriveModelFrom(robotElement *decoding.RobotElement) (*Model, error) {
 		}
 		// Collect material elements for later processing, if they exist
 		for _, visualElement := range linkElement.Visual {
-			fmt.Println("visualElement.Material:", visualElement.Material)
 			if visualElement.Material != nil {
 				foundMaterials = append(
 					foundMaterials,
