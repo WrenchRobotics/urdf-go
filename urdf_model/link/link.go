@@ -51,19 +51,20 @@ func (l *Link) FromDecodingElement(le *decoding.LinkElement) error {
 	}
 	l.Name = le.Name
 	if le.Inertial != nil {
-		if l.Inertial == nil {
-			l.Inertial = &inertial.Inertial{}
-		}
 		l.Inertial = le.Inertial
 	}
 	for _, ve := range le.Visual {
 		visual := &Visual{}
-		visual.FromDecodingElement(ve)
+		if err := visual.FromDecodingElement(ve); err != nil {
+			return fmt.Errorf("failed to decode visual: %v", err)
+		}
 		l.VisualArray = append(l.VisualArray, visual)
 	}
 	for _, ce := range le.Collision {
 		collision := &Collision{}
-		collision.FromDecodingElement(ce)
+		if err := collision.FromDecodingElement(ce); err != nil {
+			return fmt.Errorf("failed to decode collision: %v", err)
+		}
 		l.CollisionArray = append(l.CollisionArray, collision)
 	}
 

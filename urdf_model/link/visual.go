@@ -36,9 +36,6 @@ func (v *Visual) FromDecodingElement(ve *decoding.VisualElement) error {
 	}
 	v.Name = ve.Name
 	if ve.Origin != nil {
-		if v.Origin == nil {
-			v.Origin = &pose.Pose{}
-		}
 		v.Origin = ve.Origin
 	}
 	if ve.Geometry != nil {
