@@ -5,127 +5,42 @@ import (
 	model_errors "github.com/WrenchRobotics/urdf-go/errors"
 	"github.com/WrenchRobotics/urdf-go/urdf_model/joint"
 	"github.com/WrenchRobotics/urdf-go/urdf_model/link"
+	"github.com/WrenchRobotics/urdf-go/urdf_model/transmission"
 )
 
 type Model struct {
 	Name string `xml:"name,attr"`
 	// Unexported fields
 	// (as a reminder, all fields with first character in lower case will not be exported outside of a Go package)
-	rootLink  *link.Link
-	links     map[string]*link.Link                // Complete list of links, organized by name
-	joints    map[string]*joint.Joint              // Complete list of joints, organized by name
-	materials map[string]*decoding.MaterialElement // Complete list of materials, organized by name
+	rootLink      *link.Link
+	links         map[string]*link.Link                 // Complete list of links, organized by name
+	joints        map[string]*joint.Joint               // Complete list of joints, organized by name
+	materials     map[string]*decoding.MaterialElement  // Complete list of materials, organized by name
+	transmissions map[string]*transmission.Transmission // Complete list of transmissions, organized by name
 }
 
-func (m Model) GetLink(linkName string) (*link.Link, error) {
-	// Extract link pointer, if it exists
-	out, ok := m.links[linkName]
-	if !ok {
-		return nil, model_errors.LinkDoesNotExistError{
-			LinkName:  linkName,
-			ModelName: m.Name,
-		}
-	}
+/*
+CheckTransmissionElement
+Description:
 
-	// Return successfully retrieved value
-	return out, nil
-}
-
-func (m Model) NumLinks() int {
-	return len(m.links)
-}
-
-func (m Model) GetJoint(jointName string) (*joint.Joint, error) {
-	// Extract pointer to joint, if it exists
-	out, ok := m.joints[jointName]
-	if !ok {
-		return nil, model_errors.JointDoesNotExistError{
-			JointName: jointName,
-			ModelName: m.Name,
-		}
-	}
-
-	// Return successfully retrieved value
-	return out, nil
-}
-
-func (m Model) NumJoints() int {
-	return len(m.joints)
-}
-
-func (m Model) GetMaterial(materialName string) (*decoding.MaterialElement, error) {
-	// Extract pointer to material, if it exists
-	out, ok := m.materials[materialName]
-	if !ok {
-		return nil, model_errors.MaterialDoesNotExistError{
-			MaterialName: materialName,
-			ModelName:    m.Name,
-		}
-	}
-
-	// Return successfully retrieved material pointer
-	return out, nil
-}
-
-func (m Model) NumMaterials() int {
-	return len(m.materials)
-}
-
-func DeriveModelFrom(robotElement *decoding.RobotElement) (*Model, error) {
-	// Setup
-	model := &Model{
-		Name:      robotElement.Name,
-		links:     make(map[string]*link.Link),
-		joints:    make(map[string]*joint.Joint),
-		materials: make(map[string]*decoding.MaterialElement),
-	}
-
-	// Populate model with data from robotElement
-	var foundMaterials []*decoding.MaterialElement
-	// - Link information (basics only; no relationships yet)
-	for _, linkElement := range robotElement.Links {
-		model.links[linkElement.Name] = &link.Link{}
-		err := model.links[linkElement.Name].FromDecodingElement(linkElement)
-		if err != nil {
-			return nil, err
-		}
-		// Collect material elements for later processing, if they exist
-		for _, visualElement := range linkElement.Visual {
-			if visualElement.Material != nil {
-				foundMaterials = append(
-					foundMaterials,
-					visualElement.Material,
-				)
-			}
-		}
-	}
-	// - Joint information
-	for _, jointElement := range robotElement.Joints {
-		model.joints[jointElement.Name] = &joint.Joint{}
-		err := model.joints[jointElement.Name].FromDecodingElement(jointElement)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// - Material information
-	for _, material := range foundMaterials {
-		model.materials[material.Name] = &decoding.MaterialElement{}
-		*model.materials[material.Name] = *material
-	}
-	// - Establish link-joint relationships
-	err := model.DefineTreeRelationships()
+	Checks that the specified transmission element is valid within the context of the model
+*/
+func (m *Model) CheckTransmissionElement(transmissionName string) error {
+	// Extract transmission pointer
+	transmissionPtr, err := m.GetTransmission(transmissionName)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	// - Define root link
-	err = model.DefineTreeRoot()
-	if err != nil {
-		return nil, err
+	// Check that all referenced joints exist
+	for _, jointRef := range transmissionPtr.Joints {
+		_, err := m.GetJoint(jointRef.Name)
+		if err != nil {
+			return err
+		}
 	}
 
-	// Return successfully constructed model
-	return model, nil
+	return nil
 }
 
 func (m *Model) DefineTreeRelationships() error {
@@ -221,4 +136,180 @@ func (m *Model) DefineTreeRoot() error {
 		}
 	}
 
+}
+
+func DeriveModelFrom(robotElement *decoding.RobotElement) (*Model, error) {
+	// Setup
+	model := &Model{
+		Name:          robotElement.Name,
+		links:         make(map[string]*link.Link),
+		joints:        make(map[string]*joint.Joint),
+		materials:     make(map[string]*decoding.MaterialElement),
+		transmissions: make(map[string]*transmission.Transmission),
+	}
+
+	// Populate model with data from robotElement
+	var foundMaterials []*decoding.MaterialElement
+	// - Link information (basics only; no relationships yet)
+	for _, linkElement := range robotElement.Links {
+		model.links[linkElement.Name] = &link.Link{}
+		err := model.links[linkElement.Name].FromDecodingElement(linkElement)
+		if err != nil {
+			return nil, err
+		}
+		// Collect material elements for later processing, if they exist
+		for _, visualElement := range linkElement.Visual {
+			if visualElement.Material != nil {
+				foundMaterials = append(
+					foundMaterials,
+					visualElement.Material,
+				)
+			}
+		}
+	}
+	// - Joint information
+	for _, jointElement := range robotElement.Joints {
+		model.joints[jointElement.Name] = &joint.Joint{}
+		err := model.joints[jointElement.Name].FromDecodingElement(jointElement)
+		if err != nil {
+			return nil, err
+		}
+	}
+	// - Material information
+	for _, material := range foundMaterials {
+		model.materials[material.Name] = &decoding.MaterialElement{}
+		*model.materials[material.Name] = *material
+	}
+	// - Transmission information
+	for _, transmissionElement := range robotElement.Transmissions {
+		model.transmissions[transmissionElement.Name] = &transmission.Transmission{}
+		err := model.transmissions[transmissionElement.Name].FromDecodingElement(transmissionElement)
+		if err != nil {
+			return nil, err
+		}
+
+		err = model.CheckTransmissionElement(transmissionElement.Name)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// - Establish link-joint relationships
+	err := model.DefineTreeRelationships()
+	if err != nil {
+		return nil, err
+	}
+
+	// - Define root link
+	err = model.DefineTreeRoot()
+	if err != nil {
+		return nil, err
+	}
+
+	// Return successfully constructed model
+	return model, nil
+}
+
+func (m Model) GetAllJointNames() []string {
+	var out []string
+	for jointName := range m.joints {
+		out = append(out, jointName)
+	}
+	return out
+}
+
+func (m Model) GetAllLinkNames() []string {
+	var out []string
+	for linkName := range m.links {
+		out = append(out, linkName)
+	}
+	return out
+}
+
+func (m Model) GetAllMaterialNames() []string {
+	var out []string
+	for materialName := range m.materials {
+		out = append(out, materialName)
+	}
+	return out
+}
+
+func (m Model) GetAllTransmissionNames() []string {
+	var out []string
+	for transmissionName := range m.transmissions {
+		out = append(out, transmissionName)
+	}
+	return out
+}
+
+func (m Model) GetJoint(jointName string) (*joint.Joint, error) {
+	// Extract pointer to joint, if it exists
+	out, ok := m.joints[jointName]
+	if !ok {
+		return nil, model_errors.JointDoesNotExistError{
+			JointName: jointName,
+			ModelName: m.Name,
+		}
+	}
+
+	// Return successfully retrieved value
+	return out, nil
+}
+
+func (m Model) GetLink(linkName string) (*link.Link, error) {
+	// Extract link pointer, if it exists
+	out, ok := m.links[linkName]
+	if !ok {
+		return nil, model_errors.LinkDoesNotExistError{
+			LinkName:  linkName,
+			ModelName: m.Name,
+		}
+	}
+
+	// Return successfully retrieved value
+	return out, nil
+}
+
+func (m Model) GetMaterial(materialName string) (*decoding.MaterialElement, error) {
+	// Extract pointer to material, if it exists
+	out, ok := m.materials[materialName]
+	if !ok {
+		return nil, model_errors.MaterialDoesNotExistError{
+			MaterialName: materialName,
+			ModelName:    m.Name,
+		}
+	}
+
+	// Return successfully retrieved material pointer
+	return out, nil
+}
+
+func (m Model) GetTransmission(transmissionName string) (*transmission.Transmission, error) {
+	// Extract pointer to transmission, if it exists
+	out, ok := m.transmissions[transmissionName]
+	if !ok {
+		return nil, model_errors.TransmissionDoesNotExistError{
+			TransmissionName: transmissionName,
+			ModelName:        m.Name,
+		}
+	}
+
+	// Return successfully retrieved transmission pointer
+	return out, nil
+}
+
+func (m Model) NumJoints() int {
+	return len(m.joints)
+}
+
+func (m Model) NumLinks() int {
+	return len(m.links)
+}
+
+func (m Model) NumMaterials() int {
+	return len(m.materials)
+}
+
+func (m Model) NumTransmissions() int {
+	return len(m.transmissions)
 }

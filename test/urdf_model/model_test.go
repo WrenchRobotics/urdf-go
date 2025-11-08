@@ -62,3 +62,104 @@ func TestModel_DeriveModelFrom1(t *testing.T) {
 		t.Errorf("expected 1 material, got %d", model.NumMaterials())
 	}
 }
+
+/*
+TestModel_DeriveModelFrom2_transmissions_detected
+Description:
+
+Tests the DeriveModelFrom function to ensure it correctly
+derives a new model from a successfully processed <robot> tag
+that includes transmission information.
+*/
+func TestModel_DeriveModelFrom2_transmissions_detected(t *testing.T) {
+	// Setup
+	toDecode := `<robot name="test_robot">
+		<link name="link1">
+			<visual>
+				<geometry>
+					<box size="1 1 1"/>
+				</geometry>
+				<material name="test_material">
+					<color rgba="0.5 0.5 0.5 1.0"/>
+				</material>
+			</visual>
+		</link>
+		<link name="link2"/>
+		<joint name="joint1" type="fixed">
+			<parent link="link1"/>
+			<child link="link2"/>
+		</joint>
+		<transmission name="test_transmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="joint1">
+				<hardwareInterface>PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="actuator1">
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+	</robot>`
+
+	// Decode
+	var robotElt decoding.RobotElement
+	err := xml.Unmarshal([]byte(toDecode), &robotElt)
+	if err != nil {
+		t.Errorf("there was an issue decoding the input toDecode: %v", err)
+	}
+
+	// Derive model
+	model, err := urdfmodel.DeriveModelFrom(&robotElt)
+	if err != nil {
+		t.Errorf("there was an issue deriving the model: %v", err)
+	}
+
+	// Check values
+	if model.Name != "test_robot" {
+		t.Errorf("expected model name to be 'test_robot', got '%s'", model.Name)
+	}
+	if model.NumTransmissions() != 1 {
+		t.Errorf("expected 1 transmission, got %d", model.NumTransmissions())
+	}
+}
+
+/*
+TestModel_DeriveModelFrom3_bad_actuator_joint_reference
+Description:
+
+	Tests the DeriveModelFrom function to ensure it correctly
+	raises an error when a transmission references a joint that does not exist.
+	In the model below, the transmission references "non_existent_joint".
+*/
+func TestModel_DeriveModelFrom3_bad_actuator_joint_reference(t *testing.T) {
+	// Setup
+	toDecode := `<robot name="test_robot">
+		<link name="link1"/>
+		<link name="link2"/>
+		<joint name="joint1" type="fixed">
+			<parent link="link1"/>
+			<child link="link2"/>
+		</joint>
+		<transmission name="test_transmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="non_existent_joint">
+				<hardwareInterface>PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="actuator1">
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+	</robot>`
+
+	// Decode
+	var robotElt decoding.RobotElement
+	err := xml.Unmarshal([]byte(toDecode), &robotElt)
+	if err != nil {
+		t.Errorf("there was an issue decoding the input toDecode: %v", err)
+	}
+
+	// Derive model
+	_, err = urdfmodel.DeriveModelFrom(&robotElt)
+	if err == nil {
+		t.Errorf("expected an error due to bad actuator joint reference, but got none")
+	}
+}
