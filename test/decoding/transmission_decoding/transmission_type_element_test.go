@@ -14,7 +14,7 @@ Description:
 	In this test, we provide the following transmission definition from a Robotiq
 	gripper URDF file:
 		<type>transmission_interface/SimpleTransmission</type>
-	amd attempt to use the standard unmarshal to get its value.
+	and attempt to use the standard unmarshal to get its value.
 	We should expect all values to match what was given.
 */
 func TestTransmissionTypeElement_Unmarshal1(t *testing.T) {
