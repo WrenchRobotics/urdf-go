@@ -1,4 +1,4 @@
-package transmission
+package hardware_interface
 
 import "github.com/WrenchRobotics/urdf-go/decoding/transmission_decoding"
 

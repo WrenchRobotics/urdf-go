@@ -1,9 +1,9 @@
 package transmission
 
 import (
-	hardwareinterface "github.com/WrenchRobotics/urdf-go/common/hardware_interface"
-	"github.com/WrenchRobotics/urdf-go/common/transmission_type"
 	"github.com/WrenchRobotics/urdf-go/decoding/transmission_decoding"
+	"github.com/WrenchRobotics/urdf-go/urdf_model/transmission/hardware_interface"
+	"github.com/WrenchRobotics/urdf-go/urdf_model/transmission/transmission_type"
 )
 
 type Transmission struct {
@@ -27,7 +27,7 @@ func (t *Transmission) FromDecodingElement(e *transmission_decoding.Transmission
 		var jointRef TransmissionJointReference
 		jointRef.Name = jointElement.Name
 		for _, hwInterfaceElement := range jointElement.HardwareInterfaces {
-			var hwInterface hardwareinterface.HardwareInterface
+			var hwInterface hardware_interface.HardwareInterface
 			hwInterface.FromDecodingElement(&hwInterfaceElement)
 			jointRef.HardwareInterfaces = append(jointRef.HardwareInterfaces, &hwInterface)
 		}
@@ -38,9 +38,8 @@ func (t *Transmission) FromDecodingElement(e *transmission_decoding.Transmission
 	for _, actuatorElement := range e.Actuators {
 		var actuatorRef TransmissionActuatorReference
 		actuatorRef.Name = actuatorElement.Name
-		err := actuatorRef.MechanicalReduction.FromDecodingElement(&actuatorElement.MechanicalReduction)
-		if err != nil {
-			return err
+		if actuatorElement.MechanicalReduction != nil {
+			actuatorRef.MechanicalReduction = &actuatorElement.MechanicalReduction.Value
 		}
 		t.Actuators = append(t.Actuators, actuatorRef)
 	}

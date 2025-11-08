@@ -1,8 +1,8 @@
 package transmission
 
-import hardwareinterface "github.com/WrenchRobotics/urdf-go/common/hardware_interface"
+import "github.com/WrenchRobotics/urdf-go/urdf_model/transmission/hardware_interface"
 
 type TransmissionJointReference struct {
 	Name               string
-	HardwareInterfaces []*hardwareinterface.HardwareInterface
+	HardwareInterfaces []*hardware_interface.HardwareInterface
 }

@@ -19,6 +19,30 @@ type Model struct {
 	transmissions map[string]*transmission.Transmission // Complete list of transmissions, organized by name
 }
 
+/*
+CheckTransmissionElement
+Description:
+
+	Checks that the specified transmission element is valid within the context of the model
+*/
+func (m *Model) CheckTransmissionElement(transmissionName string) error {
+	// Extract transmission pointer
+	transmissionPtr, err := m.GetTransmission(transmissionName)
+	if err != nil {
+		return err
+	}
+
+	// Check that all referenced joints exist
+	for _, jointRef := range transmissionPtr.Joints {
+		_, err := m.GetJoint(jointRef.Name)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *Model) DefineTreeRelationships() error {
 	// Establish parent-child relationships between links and joints
 	for _, joint := range m.joints {
@@ -160,6 +184,11 @@ func DeriveModelFrom(robotElement *decoding.RobotElement) (*Model, error) {
 	for _, transmissionElement := range robotElement.Transmissions {
 		model.transmissions[transmissionElement.Name] = &transmission.Transmission{}
 		err := model.transmissions[transmissionElement.Name].FromDecodingElement(transmissionElement)
+		if err != nil {
+			return nil, err
+		}
+
+		err = model.CheckTransmissionElement(transmissionElement.Name)
 		if err != nil {
 			return nil, err
 		}
