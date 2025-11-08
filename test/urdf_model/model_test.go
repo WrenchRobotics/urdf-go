@@ -127,8 +127,8 @@ TestModel_DeriveModelFrom3_bad_actuator_joint_reference
 Description:
 
 	Tests the DeriveModelFrom function to ensure it correctly
-	raises an error when an actuator references a joint that does not exist.
-	In the model below, the actuator references "non_existent_joint".
+	raises an error when a transmission references a joint that does not exist.
+	In the model below, the transmission references "non_existent_joint".
 */
 func TestModel_DeriveModelFrom3_bad_actuator_joint_reference(t *testing.T) {
 	// Setup
