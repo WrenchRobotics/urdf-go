@@ -299,17 +299,17 @@ func (m Model) GetTransmission(transmissionName string) (*transmission.Transmiss
 }
 
 func (m Model) NumJoints() int {
-	return len(m.GetAllJointNames())
+	return len(m.joints)
 }
 
 func (m Model) NumLinks() int {
-	return len(m.GetAllLinkNames())
+	return len(m.links)
 }
 
 func (m Model) NumMaterials() int {
-	return len(m.GetAllMaterialNames())
+	return len(m.materials)
 }
 
 func (m Model) NumTransmissions() int {
-	return len(m.GetAllTransmissionNames())
+	return len(m.transmissions)
 }
