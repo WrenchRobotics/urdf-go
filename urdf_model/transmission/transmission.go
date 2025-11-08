@@ -28,7 +28,10 @@ func (t *Transmission) FromDecodingElement(e *transmission_decoding.Transmission
 		jointRef.Name = jointElement.Name
 		for _, hwInterfaceElement := range jointElement.HardwareInterfaces {
 			var hwInterface hardware_interface.HardwareInterface
-			hwInterface.FromDecodingElement(&hwInterfaceElement)
+			err := hwInterface.FromDecodingElement(&hwInterfaceElement)
+			if err != nil {
+				return err
+			}
 			jointRef.HardwareInterfaces = append(jointRef.HardwareInterfaces, &hwInterface)
 		}
 		t.Joints = append(t.Joints, jointRef)
