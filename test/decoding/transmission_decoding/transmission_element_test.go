@@ -52,24 +52,41 @@ func TestTransmissionElement_Unmarshal1(t *testing.T) {
 		t.Errorf("unexpected value for Type.Name: got %q, want %q",
 			transmissionElt.Type.Name, "transmission_interface/SimpleTransmission")
 	}
+	// - Joints
+	// (There should only be one joint in this example)
+	if len(transmissionElt.Joints) != 1 {
+		t.Errorf("unexpected number of Joints: got %d, want %d",
+			len(transmissionElt.Joints), 1)
+	}
 
-	if transmissionElt.Joint.Name != "finger_joint" {
+	if transmissionElt.Joints[0].Name != "finger_joint" {
 		t.Errorf("unexpected value for Joint.Name: got %q, want %q",
-			transmissionElt.Joint.Name, "finger_joint")
+			transmissionElt.Joints[0].Name, "finger_joint")
 	}
 
-	if transmissionElt.Joint.HardwareInterface.Name != "PositionJointInterface" {
-		t.Errorf("unexpected value for Joint.HardwareInterface.Name: got %q, want %q",
-			transmissionElt.Joint.HardwareInterface.Name, "PositionJointInterface")
+	if len(transmissionElt.Joints[0].HardwareInterfaces) != 1 {
+		t.Errorf("unexpected number of Joint.HardwareInterfaces: got %d, want %d",
+			len(transmissionElt.Joints[0].HardwareInterfaces), 1)
+	}
+	for _, hwInterface := range transmissionElt.Joints[0].HardwareInterfaces {
+		if hwInterface.Name != "PositionJointInterface" {
+			t.Errorf("unexpected value for Joint.HardwareInterface.Name: got %q, want %q",
+				hwInterface.Name, "PositionJointInterface")
+		}
 	}
 
-	if transmissionElt.Actuator.Name != "finger_joint_motor" {
+	// - Actuators
+	if len(transmissionElt.Actuators) != 1 {
+		t.Errorf("unexpected number of Actuators: got %d, want %d",
+			len(transmissionElt.Actuators), 1)
+	}
+	if transmissionElt.Actuators[0].Name != "finger_joint_motor" {
 		t.Errorf("unexpected value for Actuator.Name: got %q, want %q",
-			transmissionElt.Actuator.Name, "finger_joint_motor")
+			transmissionElt.Actuators[0].Name, "finger_joint_motor")
 	}
 
-	if transmissionElt.Actuator.MechanicalReduction.Value != 1.0 {
+	if transmissionElt.Actuators[0].MechanicalReduction.Value != 1.0 {
 		t.Errorf("unexpected value for Actuator.MechanicalReduction.Value: got %v, want %v",
-			transmissionElt.Actuator.MechanicalReduction.Value, 1.0)
+			transmissionElt.Actuators[0].MechanicalReduction.Value, 1.0)
 	}
 }

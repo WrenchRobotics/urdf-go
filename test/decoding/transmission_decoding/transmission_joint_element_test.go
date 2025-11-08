@@ -32,13 +32,21 @@ func TestTransmissionJointElement_Unmarshal1(t *testing.T) {
 	}
 
 	// Check values
+	// - Name
 	if transmissionJointElt.Name != "right_outer_knuckle_joint" {
 		t.Errorf("unexpected value for Name: got %q, want %q",
 			transmissionJointElt.Name, "right_outer_knuckle_joint")
 	}
 
-	if transmissionJointElt.HardwareInterface.Name != "PositionJointInterface" {
-		t.Errorf("unexpected value for HardwareInterface.Name: got %q, want %q",
-			transmissionJointElt.HardwareInterface.Name, "PositionJointInterface")
+	// - Hardware Interfaces
+	if len(transmissionJointElt.HardwareInterfaces) != 1 {
+		t.Errorf("unexpected number of HardwareInterfaces: got %d, want %d",
+			len(transmissionJointElt.HardwareInterfaces), 1)
+	}
+	for _, hwInterface := range transmissionJointElt.HardwareInterfaces {
+		if hwInterface.Name != "PositionJointInterface" {
+			t.Errorf("unexpected value for HardwareInterface.Name: got %q, want %q",
+				hwInterface.Name, "PositionJointInterface")
+		}
 	}
 }
