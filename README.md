@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/WrenchRobotics/urdf-go/graph/badge.svg?token=tI7jC7WGhv)](https://codecov.io/gh/WrenchRobotics/urdf-go)
+
 # urdf-go
 A Golang wrapper for interpreting URDF files (a version of xml).
 
