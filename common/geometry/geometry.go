@@ -80,10 +80,17 @@ func (g *Geometry) GetImplementationMap() map[geometry_type.GeometryType]Geometr
 }
 
 func (g *Geometry) Clear() {
-	for _, geomImpl := range g.GetImplementationMap() {
-		if geomImpl != nil {
-			geomImpl.Clear()
-		}
+	if g.Box != nil {
+		g.Box.Clear()
+	}
+	if g.Cylinder != nil {
+		g.Cylinder.Clear()
+	}
+	if g.Mesh != nil {
+		g.Mesh.Clear()
+	}
+	if g.Sphere != nil {
+		g.Sphere.Clear()
 	}
 }
 
