@@ -8,7 +8,7 @@ according to the URDF specification.
 
 It uses the xml encoding decorators so that you can parse xml snippets without adding more code.
 
-You should be able to parse any cylinder of the form:
+You should be able to parse any cylinder. For example, this:
 
 	<cylinder radius="0.1" length="1.0" />
 */

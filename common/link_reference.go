@@ -1,3 +1,6 @@
+/*
+This package contains objects and functions that are useful for URDF decoding as well as internal manipulations of URDF models in Go.
+*/
 package common
 
 /*
