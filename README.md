@@ -1,4 +1,5 @@
 [![codecov](https://codecov.io/gh/WrenchRobotics/urdf-go/graph/badge.svg?token=tI7jC7WGhv)](https://codecov.io/gh/WrenchRobotics/urdf-go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/WrenchRobotics/urdf-go.svg)](https://pkg.go.dev/github.com/WrenchRobotics/urdf-go)
 
 # urdf-go
 A Golang wrapper for interpreting URDF files (a version of xml).
@@ -41,4 +42,4 @@ func main() {
 }
 ```
 
-More details to come soon.
+More information about usage and documentation for the API can be found on our libraries entries on pkg.go.dev [here](https://pkg.go.dev/github.com/WrenchRobotics/urdf-go).
