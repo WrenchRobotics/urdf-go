@@ -7,16 +7,36 @@ import (
 	"strings"
 )
 
+/*
+Color is a representation of the Red, Green, Blue and
+A (?, really the transparency) of a color in a URDF model.
+*/
 type Color [4]float64
 
+/*
+NewColor uses the four components of a color
+(Red, Green, Blue, A?) to define a Color object.
+*/
 func NewColor(r, g, b, a float64) Color {
 	return Color{r, g, b, a}
 }
 
+/*
+Clear resets the color to have zero of each color
+component and sets the color to full transparency (a=0).
+*/
 func (c *Color) Clear() {
 	*c = Color{0, 0, 0, 0}
 }
 
+/*
+UnmarshalXMLAttr is used to decode the `color` attribute in
+an XML element's tag and produces a Color value.
+
+This method is typically not called directly. It is used in
+URDF decoding when calling xml.Unmarshal() on an object that contains
+fields with type Color or *Color.
+*/
 func (c *Color) UnmarshalXMLAttr(attr xml.Attr) error {
 	// Split value into three parts by the "space"
 	valueWithoutBrackets := strings.ReplaceAll(attr.Value, "[", "")
