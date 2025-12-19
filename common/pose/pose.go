@@ -5,7 +5,7 @@ package pose
 Pose is an object which exactly represents a pose according to the
 URDF specification.
 
-It uses the xml decorators so that you can take advantage
+It uses the xml struct tags so that you can take advantage
 of the xml encoding/decoding features (e.g., xml.Marhsal, xml.Unmarshal)
 to easily read or write URDFs. No need to write  any additional
 functions.

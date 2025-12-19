@@ -13,7 +13,7 @@ A mesh geometry can be defined as follows:
 
 	<mesh filename="../meshes/visual/robotiq_arg2f_85_inner_finger.obj" scale="0.001 0.001 0.001"/>
 
-The object uses the xml decorators on each field so that they are automatically
+The object uses the xml struct tags on each field so that they are automatically
 retrieved when decoding a URDF file.
 */
 type Mesh struct {

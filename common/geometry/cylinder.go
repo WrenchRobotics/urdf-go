@@ -6,7 +6,7 @@ import geometry_type "github.com/WrenchRobotics/urdf-go/common/geometry/type"
 Cylinder is an object which exactly represents a Cylinder object
 according to the URDF specification.
 
-It uses the xml encoding decorators so that you can parse xml snippets without adding more code.
+It uses the xml encoding struct tags so that you can parse xml snippets without adding more code.
 
 You should be able to parse any cylinder. For example, this:
 

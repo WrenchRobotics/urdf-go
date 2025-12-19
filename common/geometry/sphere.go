@@ -6,7 +6,7 @@ import geometry_type "github.com/WrenchRobotics/urdf-go/common/geometry/type"
 Sphere is an object that exactly represents a sphere according
 to the URDF specification.
 
-It uses the xml decorators so that you can parse URDF
+It uses the xml struct tags so that you can parse URDF
 elements without needing additional code/functions.
 
 You should be able to parse any cylinder of the form:

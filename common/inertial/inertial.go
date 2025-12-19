@@ -6,7 +6,7 @@ import "github.com/WrenchRobotics/urdf-go/common/pose"
 Represents the inertial quantities for a link (moment of inertia,
 mass, center of mass) according to the URDF specification.
 
-It uses the xml decorators to allow for easy decoding and encoding
+It uses the xml struct tags to allow for easy decoding and encoding
 using the xml.Unmarshal or xml.Marshal methods.
 
 You should be able to parse any inertial element. For example, this:
