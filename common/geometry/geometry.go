@@ -10,27 +10,25 @@ import (
 	model_errors "github.com/WrenchRobotics/urdf-go/errors"
 )
 
-/*
-The Geometry object is an object that is used to conveniently parse any
-`geometry` tag in a URDF.
-
-Typically, a geometry tag encloses a specific "implementation" of geometry, like in this case:
-
-	<geometry>
-		<mesh filename="../meshes/visual/robotiq_arg2f_85_inner_finger.obj" scale="0.001 0.001 0.001"/>
-	</geometry>
-
-Or in this example:
-
-	<geometry>
-		<box size='1.2 2.3 7'/>
-	</geometry>
-
-Because of the uncertainty in "what the geometry tag contains", we make this struct
-capable of containing _pointers_ any possible geometry implementation. During decoding,
-only ONE of the pointers will be "not nil". You can retrieve the active one by calling
-Geomtry.GetActiveImplementation() method.
-*/
+// The Geometry object is an object that is used to conveniently parse any
+// `geometry` tag in a URDF.
+//
+// Typically, a geometry tag encloses a specific "implementation" of geometry, like in this case:
+//
+//	<geometry>
+//		<mesh filename="../meshes/visual/robotiq_arg2f_85_inner_finger.obj" scale="0.001 0.001 0.001"/>
+//	</geometry>
+//
+// Or in this example:
+//
+//	<geometry>
+//		<box size='1.2 2.3 7'/>
+//	</geometry>
+//
+// Because of the uncertainty in "what the geometry tag contains", we make this struct
+// capable of containing _pointers_ any possible geometry implementation. During decoding,
+// only ONE of the pointers will be "not nil". You can retrieve the active one by calling
+// Geomtry.GetActiveImplementation() method.
 type Geometry struct {
 	// If this geometry is of Box type, then this pointer will be non-nil.
 	Box *Box `xml:"box"`
