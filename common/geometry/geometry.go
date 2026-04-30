@@ -28,7 +28,7 @@ import (
 // Because of the uncertainty in "what the geometry tag contains", we make this struct
 // capable of containing _pointers_ any possible geometry implementation. During decoding,
 // only ONE of the pointers will be "not nil". You can retrieve the active one by calling
-// Geomtry.GetActiveImplementation() method.
+// Geometry.GetActiveImplementation() method.
 type Geometry struct {
 	// If this geometry is of Box type, then this pointer will be non-nil.
 	Box *Box `xml:"box"`
