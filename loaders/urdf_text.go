@@ -3,14 +3,13 @@ package loaders
 import (
 	"encoding/xml"
 	"fmt"
-	"os"
 
 	"github.com/WrenchRobotics/urdf-go/decoding"
 	model_errors "github.com/WrenchRobotics/urdf-go/errors"
 	urdfmodel "github.com/WrenchRobotics/urdf-go/urdf_model"
 )
 
-// FromURDFFile is a function which takes in a path to a URDF file and returns a
+// FromURDFContents is a function which takes in the contents of a URDF file and returns a
 // pointer to a Model object.
 //
 // Expect an error if:
@@ -22,35 +21,22 @@ import (
 //
 // Example usage:
 //
-//	model, err := FromURDFFile("path/to/urdf/file.urdf")
+//	model, err := FromURDFContents([]byte("<robot>...</robot>"))
 //	if err != nil {
 //	    // Handle the error
 //	}
 //	// Use the model
-func FromURDFFile(path string) (*urdfmodel.Model, error) {
-	// Setup
-
-	// Check that the path exists
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil, fmt.Errorf("the file at path \"%v\" does not exist", path)
-	}
-
-	// Read the file's contents
-	content, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
-	}
-
-	// Decode
+func FromURDFContents(contents []byte) (*urdfmodel.Model, error) {
+	// Decode the XML in the contents
 	var robotElts []decoding.RobotElement
-	err = xml.Unmarshal([]byte(content), &robotElts)
+	err := xml.Unmarshal([]byte(contents), &robotElts)
 	if err != nil {
 		return nil, fmt.Errorf("error decoding XML: %v", err)
 	}
 
 	// Check that at least one robot element was found
 	if len(robotElts) == 0 {
-		return nil, model_errors.NoRobotsFoundInFileError{FilePath: path}
+		return nil, model_errors.NoRobotsFoundInContentsError{}
 	}
 
 	// Derive model
