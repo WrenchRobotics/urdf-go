@@ -13,11 +13,9 @@ import (
 // pointer to a Model object.
 //
 // Expect an error if:
-// - The file at the given path does not exist.
-// - There was an issue reading the file at the given path.
-// - There was an issue decoding the XML in the file at the given path.
-// - No robot elements were found in the XML in the file at the given path.
-// - There was an issue deriving the model from the robot element(s) found in the XML in the file at the given path.
+// - There was an issue decoding the XML in the contents.
+// - No robot elements were found in the XML in the contents.
+// - There was an issue deriving the model from the robot element(s) found in the XML in the contents.
 //
 // Example usage:
 //
