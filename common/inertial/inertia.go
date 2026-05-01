@@ -7,7 +7,7 @@ package inertial
 Represents the compressed moment of inertia for a link according to the
 URDF specification.
 
-We use the xml decorators so that you can parse `inertia` tags
+We use the xml struct tags so that you can parse `inertia` tags
 in a URDF without adding extra code.
 
 You should be able to decode any inertia of the following form:

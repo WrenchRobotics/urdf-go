@@ -42,4 +42,37 @@ func main() {
 }
 ```
 
+You can also load a URDF directly from its contents (e.g. if you already have the file bytes in memory):
+
+```
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/WrenchRobotics/urdf-go/loaders"
+)
+
+func main() {
+	// Setup
+	contents, err := os.ReadFile("500ml.urdf")
+	if err != nil {
+		panic(fmt.Errorf("there was an issue reading the URDF file: %v", err))
+	}
+
+	// Load using our loading library
+	urdfModel, err := loaders.FromURDFContents(contents)
+	if err != nil {
+		panic(fmt.Errorf("there was an issue loading the URDF contents: %v", err))
+	}
+
+	// Print information about the loaded model
+	fmt.Println("the number of links in the model:", urdfModel.NumLinks())
+	fmt.Println("the number of joints in the model:", urdfModel.NumJoints())
+	fmt.Println("the number of materials in the model:", urdfModel.NumMaterials())
+
+}
+```
+
 More information about usage and documentation for the API can be found on our libraries entries on pkg.go.dev [here](https://pkg.go.dev/github.com/WrenchRobotics/urdf-go).
