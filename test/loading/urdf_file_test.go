@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	model_errors "github.com/WrenchRobotics/urdf-go/errors"
 	"github.com/WrenchRobotics/urdf-go/loaders"
 )
 
@@ -31,6 +32,36 @@ func TestFromURDFFile_missing_file_returns_does_not_exist_error(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "does not exist") {
 		t.Fatalf("expected error to contain 'does not exist', got %q", err.Error())
+	}
+}
+
+/*
+TestFromURDFFile_invalid_xml_does_not_contain_robot_element
+Description:
+
+	Tests that FromURDFFile returns an error when the provided URDF file
+	contains invalid XML that does not include a robot element.
+*/
+func TestFromURDFFile_invalid_xml_does_not_contain_robot_element(t *testing.T) {
+	// Setup
+	badURDFPath := "bad.urdf" // This file contains invalid XML without a robot element; see test/loading/bad.urdf
+
+	// Execute
+	model, err := loaders.FromURDFFile(badURDFPath)
+
+	// Verify
+	if err == nil {
+		t.Fatalf("expected an error for URDF file without a robot element, got nil")
+	}
+	if model != nil {
+		t.Fatalf("expected model to be nil when loading URDF file without a robot element, got %#v", model)
+	}
+	if !strings.Contains(err.Error(), model_errors.NoRobotsFoundInFileError{FilePath: badURDFPath}.Error()) {
+		t.Fatalf(
+			"expected error to contain '%v', got %q",
+			model_errors.NoRobotsFoundInFileError{FilePath: badURDFPath}.Error(),
+			err.Error(),
+		)
 	}
 }
 
