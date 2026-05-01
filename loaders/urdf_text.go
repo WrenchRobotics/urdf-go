@@ -26,19 +26,19 @@ import (
 //	// Use the model
 func FromURDFContents(contents []byte) (*urdfmodel.Model, error) {
 	// Decode the XML in the contents
-	var robotElts []decoding.RobotElement
-	err := xml.Unmarshal([]byte(contents), &robotElts)
+	var robotElt decoding.RobotElement
+	err := xml.Unmarshal([]byte(contents), &robotElt)
 	if err != nil {
 		return nil, fmt.Errorf("error decoding XML: %v", err)
 	}
 
-	// Check that at least one robot element was found
-	if len(robotElts) == 0 {
+	// Ensure the root element is <robot>
+	if robotElt.XMLName.Local != "robot" {
 		return nil, model_errors.NoRobotsFoundInContentsError{}
 	}
 
 	// Derive model
-	model, err := urdfmodel.DeriveModelFrom(&robotElts[0])
+	model, err := urdfmodel.DeriveModelFrom(&robotElt)
 	if err != nil {
 		return nil, fmt.Errorf("there was an issue deriving the model: %v", err)
 	}
